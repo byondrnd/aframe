@@ -85,6 +85,11 @@ module.exports.AAnimation = registerElement('a-animation', {
      */
     getTween: {
       value: function () {
+        /* custom change for animation - start*/
+        if(!this.data){
+          return;
+        }
+        /* /custom change for animation - end*/
         var self = this;
         var data = self.data;
         var el = self.el;
@@ -197,6 +202,9 @@ module.exports.AAnimation = registerElement('a-animation', {
           this.partialSetAttribute(this.initialValue);
         }
         if (this.count === 0) {
+          /* custom change for animation - start*/
+          this.data = undefined;
+          /* /custom change for animation - end*/
           this.count = undefined;
           this.emit('animationend');
           return;
@@ -218,7 +226,11 @@ module.exports.AAnimation = registerElement('a-animation', {
         if (this.isRunning || !this.el.isPlaying) { return; }
         this.tween = this.getTween();
         this.isRunning = true;
-        this.tween.start();
+        /* custom change for animation - start*/
+        if(this.tween){
+          this.tween.start();
+        }
+        /* custom change for animation - end*/
         this.emit('animationstart');
       },
       writable: true
@@ -310,6 +322,11 @@ module.exports.AAnimation = registerElement('a-animation', {
 
     onStateAdded: {
       value: function (evt) {
+        /* custom change for animation - start*/
+        if(!this || !this.data || !this.data.begin) {
+          return;
+        }
+    /* /custom change for animation - end */
         if (evt.detail === this.data.begin) { this.start(); }
       },
       writable: true
@@ -317,6 +334,11 @@ module.exports.AAnimation = registerElement('a-animation', {
 
     onStateRemoved: {
       value: function (evt) {
+        /* custom change for animation - start*/
+        if(!this || !this.data || !this.data.begin) {
+          return;
+        }
+    /* /custom change for animation - end*/
         if (evt.detail === this.data.begin) { this.stop(); }
       },
       writable: true
